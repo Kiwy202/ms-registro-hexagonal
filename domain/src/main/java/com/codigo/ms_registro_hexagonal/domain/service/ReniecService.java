@@ -12,7 +12,6 @@ public class ReniecService {
     private final String reniecUrl;
     private final String token;
 
-    // Constructor que inyecta las propiedades desde application.properties
     public ReniecService(RestTemplate restTemplate,
                          @Value("${reniec.url}") String reniecUrl,
                          @Value("${reniec.token}") String token) {
@@ -22,16 +21,16 @@ public class ReniecService {
     }
 
     public ReniecResponse buscarPorDni(String numeroDni) {
-        // Construir la URL con query parameters
+        // Construir la URL
         String url = reniecUrl + "?numero=" + numeroDni;
 
-        // Configurar los headers de la solicitud
+        // Configurar los headers
         org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
         headers.set("Authorization", token);
 
         org.springframework.http.HttpEntity<String> entity = new org.springframework.http.HttpEntity<>(headers);
 
-        // Llamar al API externo
+        // Realizar la llamada al API
         return restTemplate.exchange(
                 url,
                 org.springframework.http.HttpMethod.GET,

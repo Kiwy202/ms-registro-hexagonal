@@ -15,9 +15,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableFeignClients("com.codigo.*")
 @ImportAutoConfiguration({FeignAutoConfiguration.class})
 @EnableJpaRepositories("com.codigo")
-public class ApplicationLauncher {
 
-    public static void main(String[] args){
-        SpringApplication.run(ApplicationLauncher.class,args);
+public class ApplicationLauncher {
+    public static void main(String[] args) {
+        SpringApplication.run(ApplicationLauncher.class, args);
     }
 }

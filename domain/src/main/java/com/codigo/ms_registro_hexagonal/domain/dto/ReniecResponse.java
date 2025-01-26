@@ -1,7 +1,6 @@
 package com.codigo.ms_registro_hexagonal.domain.dto;
 
 public class ReniecResponse {
-
     private String nombres;
     private String apellidos;
 
