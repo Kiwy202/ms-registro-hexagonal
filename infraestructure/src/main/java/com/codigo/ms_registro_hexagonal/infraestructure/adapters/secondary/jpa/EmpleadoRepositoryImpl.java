@@ -9,35 +9,30 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+public class EmpleadoRepositoryImpl {
 
-public class EmpleadoRepositoryImpl implements EmpleadoRepository {
+    private final EmpleadoRepository empleadoRepository;
 
-    private final List<Empleado> empleados = new ArrayList<>(); // Simulación de base de datos
+    public EmpleadoRepositoryImpl(EmpleadoRepository empleadoRepository) {
+        this.empleadoRepository = empleadoRepository;
+    }
 
-    @Override
     public Empleado guardar(Empleado empleado) {
-        empleados.add(empleado);
-        return empleado;
+        return empleadoRepository.save(empleado);
     }
 
-    @Override
     public Optional<Empleado> buscarPorNumeroDocumento(String numeroDocumento) {
-        return empleados.stream()
-                .filter(emp -> emp.getNumeroDocumento().equals(numeroDocumento) && emp.isActivo())
-                .findFirst();
+        return empleadoRepository.findByNumDoc(numeroDocumento);
     }
 
-    @Override
     public List<Empleado> listarTodos() {
-        return empleados.stream()
-                .filter(Empleado::isActivo)
-                .toList();
+        return empleadoRepository.findAllByEstadoTrue();
     }
 
-    @Override
-    public void eliminar(String id) {
-        empleados.stream()
-                .filter(emp -> emp.getId().equals(id))
-                .forEach(emp -> emp.setActivo(false));
+    public void eliminar(Long id) {
+        empleadoRepository.findById(id).ifPresent(empleado -> {
+            empleado.setEstado(false);
+            empleadoRepository.save(empleado);
+        });
     }
 }

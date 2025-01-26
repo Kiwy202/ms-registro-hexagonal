@@ -2,7 +2,8 @@ package com.codigo.ms_registro_hexagonal.domain.dto;
 
 public class ReniecResponse {
     private String nombres;
-    private String apellidos;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
 
     // Getters y setters
     public String getNombres() {
@@ -13,11 +14,19 @@ public class ReniecResponse {
         this.nombres = nombres;
     }
 
-    public String getApellidos() {
-        return apellidos;
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
+
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
     }
 }

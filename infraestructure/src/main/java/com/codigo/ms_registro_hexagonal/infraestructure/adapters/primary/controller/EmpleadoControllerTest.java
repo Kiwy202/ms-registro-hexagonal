@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,22 +24,30 @@ public class EmpleadoControllerTest {
 
     @Test
     public void crearEmpleadoTest() throws Exception {
-        Empleado empleado = new Empleado(
-                "1",
-                "Juan",
-                "Pérez",
-                "DNI",
-                "12345678",
-                true,
-                LocalDateTime.now(),
-                null
-        );
+        Empleado empleado = new Empleado();
+        empleado.setId(1L);
+        empleado.setNombre("Juan");
+        empleado.setApellido("Pérez");
+        empleado.setEdad(30);
+        empleado.setCargo("Analista");
+        empleado.setTipoDoc("DNI");
+        empleado.setNumDoc("12345678");
+        empleado.setDepartamento("Recursos Humanos");
+        empleado.setSalario(3500.00);
+        empleado.setTelefono("987654321");
+        empleado.setCorreo("juan.perez@example.com");
+        empleado.setEstado(true);
+        empleado.setDireccion("Av. Principal 123");
+        empleado.setDateCrea(Timestamp.from(Instant.now()));
+        empleado.setUsuaCrea("admin");
 
         mockMvc.perform(post("/empleados/crear")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(empleado)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nombres").value("Juan"));
+                .andExpect(jsonPath("$.nombre").value("Juan"))
+                .andExpect(jsonPath("$.apellido").value("Pérez"))
+                .andExpect(jsonPath("$.cargo").value("Analista"))
+                .andExpect(jsonPath("$.salario").value(3500.00));
     }
-    
 }

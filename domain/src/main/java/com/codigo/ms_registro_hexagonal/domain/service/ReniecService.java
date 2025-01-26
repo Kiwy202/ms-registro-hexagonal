@@ -1,41 +1,37 @@
 package com.codigo.ms_registro_hexagonal.domain.service;
 
 import com.codigo.ms_registro_hexagonal.domain.dto.ReniecResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@RequiredArgsConstructor
 public class ReniecService {
 
     private final RestTemplate restTemplate;
-    private final String reniecUrl;
-    private final String token;
 
-    public ReniecService(RestTemplate restTemplate,
-                         @Value("${reniec.url}") String reniecUrl,
-                         @Value("${reniec.token}") String token) {
-        this.restTemplate = restTemplate;
-        this.reniecUrl = reniecUrl;
-        this.token = token;
-    }
+    @Value("${reniec.url}")
+    private String reniecApiUrl;
 
-    public ReniecResponse buscarPorDni(String numeroDni) {
-        // Construir la URL
-        String url = reniecUrl + "?numero=" + numeroDni;
+    @Value("${reniec.token}")
+    private String token;
 
-        // Configurar los headers
-        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
-        headers.set("Authorization", token);
+    public ReniecResponse buscarPorDni(String dni) {
+        String url = reniecApiUrl + "?numero=" + dni;
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
 
-        org.springframework.http.HttpEntity<String> entity = new org.springframework.http.HttpEntity<>(headers);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<ReniecResponse> response = restTemplate.exchange(
+                url, HttpMethod.GET, entity, ReniecResponse.class
+        );
 
-        // Realizar la llamada al API
-        return restTemplate.exchange(
-                url,
-                org.springframework.http.HttpMethod.GET,
-                entity,
-                ReniecResponse.class
-        ).getBody();
+        return response.getBody();
     }
 }
